@@ -20,7 +20,7 @@ Restart Jenkins once plugins are installed
     * aws-creds-prod
     * aws-creds
 
-### Configure Agent
+### Configure Master and Agent
 
 ### Configure Jenkins Shared Libraries
 * Go to Manage Jenkins -> System

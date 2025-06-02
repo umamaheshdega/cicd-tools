@@ -28,3 +28,11 @@ yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-co
 systemctl start docker
 systemctl enable docker
 usermod -aG docker ec2-user
+
+curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/darwin/amd64/kubectl
+chmod +x ./kubectl
+mv kubectl /usr/local/bin/kubectl
+
+
+
+

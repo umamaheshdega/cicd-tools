@@ -1,7 +1,21 @@
 #!/bin/bash
 
 #resize disk from 20GB to 50GB
-growpart /dev/nvme0n1 4
+# growpart /dev/nvme0n1 4
+set -xe
+DISK="/dev/xvda"
+PART=4
+VG_NAME="RootVG"
+ROOT_LV="rootVol"
+VAR_LV="varVol"
+ARCH=amd64
+PLATFORM=$(uname -s)_$ARCH
+
+echo "🔧 Growing partition..."
+growpart "$DISK" "$PART"
+
+echo "🔄 Resizing physical volume..."
+pvresize "${DISK}${PART}"
 
 lvextend -L +10G /dev/mapper/RootVG-homeVol
 lvextend -L +10G /dev/mapper/RootVG-varVol
@@ -33,11 +47,11 @@ curl -O curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/
 chmod +x ./kubectl
 mv kubectl /usr/local/bin/kubectl
 
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
+# curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+# chmod 700 get_helm.sh
+# ./get_helm.sh
 
-dnf install maven -y
+# dnf install maven -y
 
 
 

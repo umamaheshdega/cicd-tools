@@ -37,14 +37,12 @@ data "aws_security_group" "sg_id" {
 }
 
 data "aws_subnet" "subnet_id" {
-    filter {
-        name = "Public-subnet"
-        Values = ["my-subnet-name"]
-    }
+  filter {
+    name   = "tag:Name"
+    values = ["my-subnet-name"]
+  }
 
-    filter {
-    name   = "vpc-id"
-    values = ["vpc-0b54eb72ed77d3dca"]
-    }
+  vpc_id = "vpc-0b54eb72ed77d3dca"
 }
+
 

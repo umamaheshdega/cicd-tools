@@ -2,11 +2,11 @@
 data "aws_ami" "ami_info" {
 
     most_recent = true
-    owners = ["439307002497"]
+    owners = ["973714476881"]
 
     filter {
         name   = "name"
-        values = ["RHEL-9-DevOps-Practice"]
+        values = ["RHEL-9-DevOps-Practice*"]
     }
 
     filter {
@@ -21,28 +21,14 @@ data "aws_ami" "ami_info" {
 }
 
 
-data "aws_security_group" "sg_id" {
-  filter {
-    name   = "group-name"
-    values = ["my-security-group"]
-  }
+# data "aws_security_group" "sg_id" {
+#   id = "sg-0c440c4fb8c91ad1a"
+# } 
 
-  filter {
-    name   = "vpc-id"
-    values = ["vpc-0b54eb72ed77d3dca"]
 
- 
+# data "aws_subnet" "subnet_id" {
+#   id = "subnet-05250591bb0daca6a"
+# }
 
-  }
-}
-
-data "aws_subnet" "subnet_id" {
-  filter {
-    name   = "tag:Name"
-    values = ["my-subnet-name"]
-  }
-
-  vpc_id = "vpc-0b54eb72ed77d3dca"
-}
 
 

@@ -4,8 +4,9 @@ module "jenkins" {
   name = "jenkins"
 
   instance_type          = "t3.small"
-  vpc_security_group_ids = ["data.aws_security_group.sg_id.id"] #replace your SG
-  subnet_id = "data.aws_subnet.subnet_id.id" #replace your Subnet
+  vpc_security_group_ids = ["sg-0c440c4fb8c91ad1a"] #replace your SG
+  associate_public_ip_address = true 
+  subnet_id = "subnet-05250591bb0daca6a" #replace your Subnet
   ami = data.aws_ami.ami_info.id
   user_data = file("jenkins.sh")
   tags = {
@@ -13,13 +14,11 @@ module "jenkins" {
   }
 
   # Define the root volume size and type
-  root_block_device = [
-    {
+  root_block_device = {
       volume_size = 50       # Size of the root volume in GB
       volume_type = "gp3"    # General Purpose SSD (you can change it if needed)
       delete_on_termination = true  # Automatically delete the volume when the instance is terminated
     }
-  ]
 }
 
 module "jenkins_agent" {
@@ -28,21 +27,21 @@ module "jenkins_agent" {
   name = "jenkins-agent"
 
   instance_type          = "t3.small"
-  vpc_security_group_ids = ["data.aws_security_group.sg_id.id"] #replace your SG
-  subnet_id = "data.aws_subnet.subnet_id.id" #replace your Subnet
+  vpc_security_group_ids = ["sg-0c440c4fb8c91ad1a"] #replace your SG
+  associate_public_ip_address = true 
+  subnet_id = "subnet-05250591bb0daca6a" #replace your Subnet
   ami = data.aws_ami.ami_info.id
   user_data = file("jenkins-agent.sh")
   tags = {
     Name = "jenkins-agent"
   }
 
-  root_block_device = [
-    {
+  root_block_device = {
       volume_size = 50       # Size of the root volume in GB
       volume_type = "gp3"    # General Purpose SSD (you can change it if needed)
       delete_on_termination = true  # Automatically delete the volume when the instance is terminated
     }
-  ]
+  
 }
 
 module "records" {
@@ -56,24 +55,23 @@ module "records" {
       name    = "jenkins"
       type    = "A"
       ttl     = 1
-      records = [
-        module.jenkins.public_ip
-      ]
+      records = [module.jenkins.public_ip]
       allow_overwrite = true
     },
     {
       name    = "jenkins-agent"
       type    = "A"
       ttl     = 1
-      records = [
-        module.jenkins_agent.private_ip
-      ]
+      records = [module.jenkins_agent.private_ip]
       allow_overwrite = true
     }
   ]
 
 }
 
-output "sg_id" {
-  value = data.aws_security_group.sg_id.id
-}
+
+
+
+# output "sg_id" {
+#   value = data.aws_security_group.sg_id.id
+# }
